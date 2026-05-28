@@ -34,7 +34,7 @@ export class Renderer {
   }
 
   clear(): string {
-    return '\x1b[2J\x1b[H';
+    return this.clearScreen();
   }
 
   dispose(): void {

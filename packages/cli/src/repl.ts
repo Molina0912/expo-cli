@@ -101,6 +101,10 @@ export async function runRepl(_flags: CliFlags): Promise<void> {
         }
 
         rl.prompt();
+      }).catch((err: unknown) => {
+        const msg = err instanceof Error ? err.message : String(err);
+        process.stdout.write(color(`Error: ${msg}`, ansi.red) + '\n');
+        rl.prompt();
       });
       return;
     }

@@ -21,8 +21,24 @@ export const ansi = {
   brightWhite: '\x1b[97m',
 };
 
+export function shouldColor(): boolean {
+  if (process.env.NO_COLOR !== undefined) {
+    return false;
+  }
+  if (process.env.FORCE_COLOR !== undefined) {
+    return true;
+  }
+  if (!process.stdout.isTTY) {
+    return false;
+  }
+  return true;
+}
+
 export function color(text: string, ...codes: string[]): string {
   if (codes.length === 0) {
+    return text;
+  }
+  if (!shouldColor()) {
     return text;
   }
   return codes.join('') + text + ansi.reset;
