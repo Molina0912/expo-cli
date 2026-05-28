@@ -1,0 +1,113 @@
+{
+  // ─── Modelo principal ──────────────────────────────────────────────────────────
+  // Formato: "proveedor/modelo"
+  // mimo-v2.5-free es un modelo gratuito del proveedor "opencode"
+  "model": "opencode/mimo-v2.5-free",
+
+  // ─── Modelo secundario (para tareas como generar titulos, resumenes) ───────────
+  "small_model": "opencode/mimo-v2.5-free",
+
+  // ─── Agente por defecto ────────────────────────────────────────────────────────
+  "default_agent": "build",
+
+  // ─── Configuracion de agentes ──────────────────────────────────────────────────
+  "agent": {
+    // Agente principal para construir/implementar codigo
+    "build": {
+      "model": "opencode/mimo-v2.5-free",
+      "description": "Primary coding agent for implementing features and fixing bugs"
+    },
+    // Agente de planificacion
+    "plan": {
+      "model": "opencode/mimo-v2.5-free",
+      "description": "Planning agent for analyzing tasks and creating implementation plans"
+    },
+    // Subagentes
+    "general": {
+      "model": "opencode/mimo-v2.5-free",
+      "mode": "subagent",
+      "description": "General-purpose subagent for varied tasks"
+    },
+    "explore": {
+      "model": "opencode/mimo-v2.5-free",
+      "mode": "subagent",
+      "description": "Explores codebases to understand structure and find relevant code"
+    },
+    "scout": {
+      "model": "opencode/mimo-v2.5-free",
+      "mode": "subagent",
+      "description": "Quick reconnaissance of files and directories"
+    }
+  },
+
+  // ─── Proveedor opencode (gratuito, sin API key requerida) ──────────────────────
+  "provider": {
+    "opencode": {
+      "name": "OpenCode",
+      "options": {
+        "apiKey": "public"
+      }
+    }
+  },
+
+  // ─── Permisos ──────────────────────────────────────────────────────────────────
+  // Controla que puede hacer el agente sin pedir confirmacion
+  "permission": {
+    // "edit" controla escritura de archivos
+    // Opciones: "allow" (siempre), "ask" (preguntar), "deny" (nunca)
+    "edit": "ask",
+    // "bash" controla ejecucion de comandos
+    "bash": "ask",
+    // "mcp" controla herramientas MCP
+    "mcp": "ask"
+  },
+
+  // ─── Compactacion automatica ───────────────────────────────────────────────────
+  // Cuando el contexto se llena, compacta automaticamente
+  "compaction": {
+    "auto": true,
+    "prune": true,
+    "tail_turns": 2
+  },
+
+  // ─── Herramientas habilitadas/deshabilitadas ───────────────────────────────────
+  "tools": {
+    "bash": true,
+    "read": true,
+    "write": true,
+    "edit": true,
+    "glob": true,
+    "grep": true,
+    "fetch": true,
+    "patch": true,
+    "todoedit": true,
+    "todoread": true
+  },
+
+  // ─── Watcher (archivos ignorados) ──────────────────────────────────────────────
+  "watcher": {
+    "ignore": [
+      "node_modules",
+      ".git",
+      "dist",
+      "build",
+      ".next",
+      ".nuxt",
+      "coverage",
+      "__pycache__",
+      ".expo"
+    ]
+  },
+
+  // ─── Compartir sesiones ────────────────────────────────────────────────────────
+  "share": "manual",
+
+  // ─── Auto-update ───────────────────────────────────────────────────────────────
+  "autoupdate": "notify",
+
+  // ─── Opciones experimentales ───────────────────────────────────────────────────
+  "experimental": {
+    "batch_tool": true,
+    "continue_loop_on_deny": false
+  }
+}
