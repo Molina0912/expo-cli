@@ -21,6 +21,7 @@ export type OutputStyle = 'markdown' | 'plain' | 'json';
 export interface StatusLineData {
   model: string;
   tokens?: number;
+  cost?: string;
   session?: string;
   mode?: string;
 }
