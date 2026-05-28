@@ -7,7 +7,9 @@ import { join } from 'path';
 import { tmpdir } from 'os';
 import { randomBytes } from 'crypto';
 
-const TEST_DB_PATH = join(tmpdir(), `test-permissions-${randomBytes(4).toString('hex')}.db`);
+function makeDbPath(): string {
+  return join(tmpdir(), `test-permissions-${randomBytes(8).toString('hex')}.db`);
+}
 
 function makeContext(sessionId = 'session-1'): PermissionContext {
   return { sessionId, mode: 'interactive' };
@@ -20,19 +22,22 @@ function makeQuery(scope: string, resource: string, sessionId = 'session-1'): Pe
 describe('PermissionStore', () => {
   let db: SQLiteConnection;
   let store: PermissionStore;
+  let dbPath: string;
 
   beforeEach(() => {
-    if (existsSync(TEST_DB_PATH)) {
-      unlinkSync(TEST_DB_PATH);
-    }
-    db = new SQLiteConnection({ path: TEST_DB_PATH });
+    dbPath = makeDbPath();
+    db = new SQLiteConnection({ path: dbPath });
     store = new PermissionStore(db);
   });
 
   afterEach(() => {
     db.close();
-    if (existsSync(TEST_DB_PATH)) {
-      unlinkSync(TEST_DB_PATH);
+    try {
+      if (existsSync(dbPath)) {
+        unlinkSync(dbPath);
+      }
+    } catch {
+      // Ignore Windows file-locking errors on cleanup
     }
   });
 
