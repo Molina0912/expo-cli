@@ -212,6 +212,9 @@ importers:
       '@expo/storage':
         specifier: workspace:*
         version: link:../storage
+      '@expo/tui':
+        specifier: workspace:*
+        version: link:../tui
     devDependencies:
       '@types/bun':
         specifier: ^1.2.14
