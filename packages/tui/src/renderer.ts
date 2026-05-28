@@ -1,7 +1,7 @@
 import type { Theme, OutputStyle } from './types.js';
 import { DARK_THEME } from './themes.js';
 import { formatMarkdown } from './output.js';
-import { ansi, color } from './colors.js';
+import { ansi, color, stripAnsi } from './colors.js';
 
 export interface RendererOptions {
   altScreen?: boolean;
@@ -72,11 +72,11 @@ export class Renderer {
     const width = this.getTerminalWidth();
     const lines: string[] = [];
     for (const paragraph of text.split('\n')) {
-      if (paragraph.length <= width) {
+      if (stripAnsi(paragraph).length <= width) {
         lines.push(paragraph);
       } else {
         let remaining = paragraph;
-        while (remaining.length > width) {
+        while (stripAnsi(remaining).length > width) {
           let breakPoint = remaining.lastIndexOf(' ', width);
           if (breakPoint <= 0) {
             breakPoint = width;
