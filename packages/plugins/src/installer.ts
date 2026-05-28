@@ -21,6 +21,8 @@ export class PluginInstaller {
   }
 
   private async installFromNpm(resolved: ResolvedPlugin, pluginsDir: string): Promise<string> {
+    // For npm packages, the source is a package name like @expo/plugin-git or expo-plugin-docker
+    // Strip leading @ and replace / with - to create a valid directory name
     const name = resolved.source.replace(/^@/, '').replace(/\//g, '-');
     const pluginDir = join(pluginsDir, name);
     mkdirSync(pluginDir, { recursive: true });

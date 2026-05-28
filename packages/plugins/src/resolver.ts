@@ -1,5 +1,5 @@
 import { existsSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { resolve, isAbsolute } from 'node:path';
 
 export interface ResolvedPlugin {
   type: 'npm' | 'local' | 'git';
@@ -41,7 +41,7 @@ export class PluginResolver {
   }
 
   resolve(source: string): ResolvedPlugin {
-    if (source.startsWith('.') || source.startsWith('/')) {
+    if (source.startsWith('.') || source.startsWith('/') || isAbsolute(source)) {
       return this.resolveFromLocal(source);
     }
     if (source.match(/^(https?:\/\/|git@|git:\/\/)/)) {

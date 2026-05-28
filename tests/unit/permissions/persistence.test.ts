@@ -3,8 +3,11 @@ import { PermissionStore } from '@expo/permissions';
 import type { PermissionQuery, PermissionDecision, PermissionContext } from '@expo/permissions';
 import { SQLiteConnection } from '@expo/storage';
 import { unlinkSync, existsSync } from 'fs';
+import { join } from 'path';
+import { tmpdir } from 'os';
+import { randomBytes } from 'crypto';
 
-const TEST_DB_PATH = '/tmp/test-permissions.db';
+const TEST_DB_PATH = join(tmpdir(), `test-permissions-${randomBytes(4).toString('hex')}.db`);
 
 function makeContext(sessionId = 'session-1'): PermissionContext {
   return { sessionId, mode: 'interactive' };

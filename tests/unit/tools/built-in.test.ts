@@ -6,6 +6,8 @@ import { bashTool, readFileTool, writeFileTool, editFileTool, globTool, grepTool
 import type { ToolContext } from '@expo/tools';
 
 const testDir = join(tmpdir(), `expo-tools-test-${Date.now()}`);
+const isWindows = process.platform === 'win32';
+const describeUnix = isWindows ? describe.skip : describe;
 
 function makeContext(cwd?: string): ToolContext {
   return {
@@ -27,7 +29,7 @@ afterAll(() => {
   rmSync(testDir, { recursive: true, force: true });
 });
 
-describe('bash tool', () => {
+describeUnix('bash tool', () => {
   test('executes echo command', async () => {
     const result = await bashTool.execute({ command: 'echo hello' }, makeContext());
     expect((result as { stdout: string }).stdout.trim()).toBe('hello');

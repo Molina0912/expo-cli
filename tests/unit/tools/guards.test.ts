@@ -6,6 +6,9 @@ import { writeFileSync, mkdirSync, unlinkSync, rmdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
+const isWindows = process.platform === 'win32';
+const describeUnix = isWindows ? describe.skip : describe;
+
 function makeContext(overrides: Partial<ToolContext> = {}): ToolContext {
   return {
     workingDir: process.cwd(),
@@ -16,7 +19,7 @@ function makeContext(overrides: Partial<ToolContext> = {}): ToolContext {
 }
 
 describe('Built-in tools sandbox guard checks', () => {
-  describe('bash tool', () => {
+  describeUnix('bash tool', () => {
     test('blocks execution when ProcessGuard denies command', async () => {
       const guards: SandboxGuards = {
         process: {
